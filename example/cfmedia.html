@@ -75,7 +75,7 @@
               </div>
 
               <div class="col-md-12" style="height: 256px; overflow: auto; margin-top: 14px;">
-                <div ng-repeat="element in elements" class="col-lg-2 thumbnail"
+                <div ng-repeat="element in elements | orderBy:order:true" class="col-lg-2 thumbnail"
                      ng-class="{'selected': element.activeClass}"
                      ng-click="select(element, $index)">
                   <img ng-src="{{ srcUrl + element.meta }}" class="img-thumbnail" alt="">

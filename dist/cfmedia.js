@@ -34,6 +34,7 @@ angular.module("cf", [
  *                  image/*,application/pdf
  *                  audio/*
  *                  video/*
+ * - 'order'    : Optional. Default value is 'date'. String with the option to order by elements result.
  */
   .directive('cfmedia', [function () {
     return {
@@ -48,7 +49,8 @@ angular.module("cf", [
         srcUrl     : '@?url',
         multiple   : '=?multiple',
         returnModel: '@?return',
-        accept     : '@?'
+        accept     : '@?',
+        order      : '@?'
       },
       templateUrl: 'cfmedia.html',
 
@@ -145,6 +147,7 @@ angular.module("cf", [
             $scope.headTitle = angular.isDefined($scope.headTitle) ? $scope.headTitle : 'Change Imagen';
             $scope.returnModel = angular.isDefined($scope.returnModel) ? $scope.returnModel : 'object';
             $scope.accept = angular.isDefined($scope.accept) ? $scope.accept : 'image/*';
+            $scope.order = angular.isDefined($scope.order) ? $scope.order : 'date';
 
             $scope.params = {
               limit : 10,
