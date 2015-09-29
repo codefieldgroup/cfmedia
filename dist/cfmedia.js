@@ -35,6 +35,7 @@ angular.module("cf", [
  *                  audio/*
  *                  video/*
  * - 'order'    : Optional. Default value is 'date'. String with the option to order by elements result.
+ * - 'filter'   : Optional. Default value is 'meta'. String with field name of object that contain image name, example: dc3443.png
  */
   .directive('cfmedia', [function () {
     return {
@@ -50,7 +51,8 @@ angular.module("cf", [
         multiple   : '=?multiple',
         returnModel: '@?return',
         accept     : '@?',
-        order      : '@?'
+        order      : '@?',
+        filter     : '@?'
       },
       templateUrl: 'cfmedia.html',
 
@@ -148,6 +150,7 @@ angular.module("cf", [
             $scope.returnModel = angular.isDefined($scope.returnModel) ? $scope.returnModel : 'object';
             $scope.accept = angular.isDefined($scope.accept) ? $scope.accept : 'image/*';
             $scope.order = angular.isDefined($scope.order) ? $scope.order : 'date';
+            $scope.filter = angular.isDefined($scope.filter) ? $scope.filter : 'meta';
 
             $scope.params = {
               limit : 10,

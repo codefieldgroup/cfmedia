@@ -78,7 +78,7 @@
                 <div ng-repeat="element in elements | orderBy:order:true" class="col-lg-2 thumbnail"
                      ng-class="{'selected': element.activeClass}"
                      ng-click="select(element, $index)">
-                  <img ng-src="{{ srcUrl + element.meta }}" class="img-thumbnail" alt="">
+                  <img ng-src="{{ srcUrl + element[filter] }}" class="img-thumbnail" alt="">
                 </div>
               </div>
 

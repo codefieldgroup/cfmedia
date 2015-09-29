@@ -16,7 +16,17 @@ angular.module('example', [
 
     return {
 
-      // Get all element by pagination or not.
+      /**
+       * Get all element by pagination or not.
+       *
+       * @param jsonObject : Object to getting the data with pagination. Example of their parameters:
+       *  {
+       *   limit : 10,
+       *   offset: 0,
+       *   search: ''
+       *  }
+       * @param callback
+       */
       getAll: function (jsonObject, callback) {
         $http({
           method: 'GET',
