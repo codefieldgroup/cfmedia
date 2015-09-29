@@ -5,13 +5,13 @@ angular.module('example', [
   'cf'
 ])
 
-  .controller('ExampleController', ['$scope', 'Media', function ($scope, Media) {
+  .controller('ExampleController', ['$scope', function ($scope) {
     $scope.removeImage = function () {
       $scope.test = null;
     };
   }])
 
-  .factory('Media', ['$rootScope', '$http', function ($rootScope, $http) {
+  .factory('Media', ['$http', function ($http) {
     var route = 'server.php';
 
     return {
