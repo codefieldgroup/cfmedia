@@ -2,14 +2,34 @@
 
 // Declare app level module which depends on filters, and services.
 angular.module('example', [
-  'ngFileUpload',
   'cf'
 ])
 
   .controller('ExampleController', ['$scope', 'Media', function ($scope, Media) {
-    console.log('ok')
+    $scope.removeImage = function () {
+      $scope.test = null;
+    };
   }])
 
-  .factory('Media', ['$rootScope', function ($rootScope) {
-    return {}
+  .factory('Media', ['$rootScope', '$http', function ($rootScope, $http) {
+    var route = 'server.php';
+
+    return {
+
+      // Get all element by pagination or not.
+      getAll: function (jsonObject, callback) {
+        $http({
+          method: 'GET',
+          url   : route,
+          params: jsonObject
+        })
+          .success(function (result) {
+            callback(result);
+          })
+          .error(function (error, status) {
+            console.log('not access: ', status, error);
+          });
+      }
+
+    }
   }]);
