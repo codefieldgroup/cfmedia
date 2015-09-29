@@ -21,12 +21,17 @@
       border        : 2px dashed #428BCA;
       border-radius : 0px;
     }
+
+    .cfmedia .cf-search {
+      background-color : #EEEEEE;
+      padding          : 3px 5px;
+    }
   </style>
   <div ng-transclude ng-click="openMediaModal(); openMediaModalCtrl()"></div>
 
   <!-- Modal -->
   <div class="cfmedia-modal modal fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="z-index : 1030; width : 98%;">
+    <div class="modal-dialog" style="z-index : 1030; width : 92%;">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -36,9 +41,13 @@
           <div class="row">
             <div class="col-md-12">
               <div class="jumbotron" style="padding: 17px 0; margin-bottom: 0px;"
-                   ngf-drop ng-model="modelUpload" class="drop-box"
-                   ngf-drag-over-class="dragover" ngf-multiple="true" ngf-allow-dir="true"
-                   ngf-accept="'image/*,application/pdf'"
+                   ngf-drop
+                   ng-model="modelUpload"
+                   class="drop-box"
+                   ngf-drag-over-class="dragover"
+                   ngf-multiple="true"
+                   ngf-allow-dir="true"
+                   ngf-accept="accept"
                       >
                 <h3 style="margin-top: -3px;color: #393939;">
                   Drop files anywhere to upload
@@ -51,19 +60,21 @@
                 <button ngf-select ngf-multiple="true" ng-model="modelUpload" type="button"
                         class="btn btn-primary btn-lg no-border"
                         style="font-size: 16px;"
-                        ngf-accept="'image/*,application/pdf'">
+                        ngf-accept="accept">
                   Select Files
                 </button>
               </div>
             </div>
 
             <div class="col-md-12">
-              <div class="input-group input-group-sm col-md-4 pull-right">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                <input type="text" class="form-control" ng-model="search" placeholder="Search ...">
+              <div class="col-md-12 cf-search">
+                <div class="input-group input-group-sm col-md-4 pull-right">
+                  <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                  <input type="text" class="form-control" ng-model="search" placeholder="Search ...">
+                </div>
               </div>
 
-              <div style="height: 256px; overflow: auto; margin-top: 14px;">
+              <div class="col-md-12" style="height: 256px; overflow: auto; margin-top: 14px;">
                 <div ng-repeat="element in elements" class="col-lg-2 thumbnail"
                      ng-class="{'selected': element.activeClass}"
                      ng-click="select(element, $index)">

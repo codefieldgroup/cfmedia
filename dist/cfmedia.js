@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module("cf", [])
+angular.module("cf", [
+  'ngFileUpload'
+])
 
 /**
  * Directive to media upload as Wordpress´s media.
@@ -10,7 +12,9 @@ angular.module("cf", [])
  *   ng-model="test"
  *   multiple="true"
  *   url="/public/path/upload/"
- *   api="api/media" head="Upload Image">
+ *   accept="image/*,application/pdf"
+ *   api="api/media"
+ *   head="Upload Image">
  *     <button type="button" class="btn btn-default no-border">View Media Upload</button>
  * </div>
  *
@@ -19,11 +23,17 @@ angular.module("cf", [])
  * - 'ng-model' : Required.
  * - 'head'     : Optional. Default value is 'Change Image'. String with the title of the modal.
  * - 'api'      : Optional. Default value is 'api/media'. String with the route of api media.
- * - 'url'      : Optional. Default value is '/public/path/upload/'. String with the url to path of public images.
+ * - 'url'      : Optional. Default value is '/public/upload/'. String with the url to path of public images.
  * - 'multiple' : Optional. Default value is true. Boolean with the options to multiples images or not.
  * - 'return'   : Optional. Default value is 'object'. String with the format to return result, "string" or "object".
  *                If "string" then only return the meta field of image object.
  *                If "object" then return the image object.
+ * - 'accept'   : Optional. Default value is 'image/*'. String with function or comma separated wildcard to filter files allowed.
+ *                Other options:
+ *                  .pdf,.jpg
+ *                  image/*,application/pdf
+ *                  audio/*
+ *                  video/*
  */
   .directive('cfmedia', [function () {
     return {
@@ -37,7 +47,8 @@ angular.module("cf", [])
         apiUrl     : '@?api',
         srcUrl     : '@?url',
         multiple   : '=?multiple',
-        returnModel: '@?return'
+        returnModel: '@?return',
+        accept     : '@?'
       },
       templateUrl: 'cfmedia.html',
 
@@ -53,10 +64,8 @@ angular.module("cf", [])
       },
 
       controller: ['$scope', '$timeout', 'Upload', 'Media', function ($scope, $timeout, Upload, Media) {
-        $scope.headTitle = angular.isDefined($scope.headTitle) ? $scope.headTitle : 'Change Imagen';
         $scope.apiUrl = angular.isDefined($scope.apiUrl) ? $scope.apiUrl : 'api/media';
-        $scope.srcUrl = angular.isDefined($scope.srcUrl) ? $scope.srcUrl : '/bundles/cfsclinic/upload/';
-        $scope.returnModel = angular.isDefined($scope.returnModel) ? $scope.returnModel : 'object';
+        $scope.srcUrl = angular.isDefined($scope.srcUrl) ? $scope.srcUrl : '/public/upload/';
 
         $scope.elementsSelected = [];
 
@@ -92,12 +101,11 @@ angular.module("cf", [])
                 var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                 $scope.progress = progressPercentage;
               }).success(function (result) {
-                $scope.elements.push(result.data);
+                $scope.elements.push(result);
               }).error(function (data, status, headers, config) {
                 console.log('error status: ' + status);
               })
             });
-
           };
 
           /**
@@ -134,6 +142,9 @@ angular.module("cf", [])
            */
           $scope.openMediaModalCtrl = function () {
             $scope.multiple = angular.isDefined($scope.multiple) ? $scope.multiple : true;
+            $scope.headTitle = angular.isDefined($scope.headTitle) ? $scope.headTitle : 'Change Imagen';
+            $scope.returnModel = angular.isDefined($scope.returnModel) ? $scope.returnModel : 'object';
+            $scope.accept = angular.isDefined($scope.accept) ? $scope.accept : 'image/*';
 
             $scope.params = {
               limit : 10,
@@ -144,33 +155,37 @@ angular.module("cf", [])
             $scope.elementsSelected = [];
             $scope.elements = [];
 
-            //Media.getAll({
-            //  limit : $scope.params.limit,
-            //  offset: $scope.params.offset,
-            //  search: $scope.params.search
-            //}, function (result) {
-            //  $scope.elements = angular.copy(result.data);
-            //});
+            Media.getAll({
+              limit : $scope.params.limit,
+              offset: $scope.params.offset,
+              search: $scope.params.search
+            }, function (result) {
+              $scope.elements = angular.copy(result);
+            });
           };
 
           /**
            * Function to instantiate model with the selected values.
            */
           $scope.selectSaveCtrl = function () {
-            if ($scope.multiple) {
-              if ($scope.returnModel == 'string') {
-                angular.forEach($scope.elementsSelected, function (value) {
-                  $scope.model.push(value.meta);
-                });
-              } else if ($scope.returnModel == 'object') {
-                $scope.model = $scope.elementsSelected;
+            if ($scope.elementsSelected.length > 0) {
+              if ($scope.multiple) {
+                if ($scope.returnModel == 'string') {
+                  angular.forEach($scope.elementsSelected, function (value) {
+                    $scope.model.push(value.meta);
+                  });
+                } else if ($scope.returnModel == 'object') {
+                  $scope.model = $scope.elementsSelected;
+                }
+              } else {
+                if ($scope.returnModel == 'string') {
+                  $scope.model = $scope.elementsSelected[0].meta;
+                } else if ($scope.returnModel == 'object') {
+                  $scope.model = $scope.elementsSelected[0];
+                }
               }
             } else {
-              if ($scope.returnModel == 'string') {
-                $scope.model = $scope.elementsSelected[0].meta;
-              } else if ($scope.returnModel == 'object') {
-                $scope.model = $scope.elementsSelected[0];
-              }
+              alert('Please select one element.');
             }
           };
 
@@ -185,12 +200,12 @@ angular.module("cf", [])
               offset: $scope.params.offset,
               search: $scope.params.search
             }, function (result) {
-              if (result.data.length > 0) {
-                angular.forEach(result.data, function (value) {
+              if (result.length > 0) {
+                angular.forEach(result, function (value) {
                   $scope.elements.push(value);
                 });
               } else {
-                console.log('No more elements in DB.');
+                alert('No more elements in DB.');
               }
             });
           };
@@ -199,20 +214,18 @@ angular.module("cf", [])
             $scope.params.search = newValue;
             $scope.params.offset = 0;
 
-            //Media.getAll({
-            //  limit : $scope.params.limit,
-            //  offset: $scope.params.offset,
-            //  search: $scope.params.search
-            //}, function (result) {
-            //  if (result.data.length > 0) {
-            //    $scope.elements = angular.copy(result.data);
-            //  } else {
-            //    console.log('No more elements in DB.');
-            //  }
-            //});
+            Media.getAll({
+              limit : $scope.params.limit,
+              offset: $scope.params.offset,
+              search: $scope.params.search
+            }, function (result) {
+              if (result.length > 0) {
+                $scope.elements = angular.copy(result);
+              } else {
+                alert('No more elements in DB.');
+              }
+            });
           });
-        } else {
-          console.log('La directiva cfmedia necesita la opción api con la url de la ruta para funcionar.');
         }
       }]
     }
