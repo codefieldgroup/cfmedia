@@ -11,25 +11,35 @@ CFMedia is a simple directive to media upload inspired by Wordpress media style.
 - Add **cf** as a dependency to your app. Example:
 ```
 angular.module('example', [
-    ...,
     'cf'
 ])
 ```
 
 ## In html:
 
+External libraries scripts:
+
 ```
 <script src="./bower_components/is_js/is.min.js"></script>
+<script src="./bower_components/ng-file-upload-shim/ng-file-upload-shim.min.js"></script>
+<script src="./bower_components/ng-file-upload/ng-file-upload.min.js"></script>
+```
+Directive script:
+
+```
 <script src="./bower_components/cfmedia/dist/cfmedia.min.js"></script>
 ```
+
+Usage:
 
 ```
 <div cfmedia
     ng-model="test"
-    multiple="true"
+    multiple="false"
     url="/public/path/upload/"
     accept="image/*,application/pdf"
     api="api/media"
+    order="date"
     head="Upload Image">
       <button type="button" class="btn btn-default">View Media Upload</button>
 </div>
@@ -52,41 +62,104 @@ The directive accepts the following attributes:
 |        |    .pdf,.jpg    |
 |        |    image/*,application/pdf    |
 |        |    audio/*,video/*    |
+|    order    |    Optional. Default value is 'date'. String with the option to order by elements result.    |
+|    filter    |    Optional. Default value is 'meta'. String with field name of object that contain image name, example: dc3443.png    |
 
-** POR AQUI ME QUEDÉ LA EDICIÓN **
+#### Factory - Required
 
-#### Controller
+Factory with name **Media** and function with name **getAll**.
 
-In the controller you should create a function with same name that parameter fnc of the directive, in this case is getData().
+Where **getAll** return a object list where each object contain a **meta** field with the name of the image saved in the public folder
+
+If your model not contain a **meta** field then you should specify the name of the field in the option **filter** of the directive cfmedia.
+
+`filter="meta"`
+
+The idea is have an only model in order to work with all the images.
+
+###### Example of Media Model with $http
 
 ```
-$scope.getData = function () {
-    Model.query({
-        offset: $scope.params.offset,
-        limit : $scope.params.limit
-    }, function (result) {
-        $scope.years = result.data;
-        $scope.params.total = result.meta.total;
-    })
-}
+.factory('Media', ['$http', function ($http) {
+    var route = 'media';
+
+    return {
+
+      /**
+       * Get all element by pagination or not.
+       *
+       * @param jsonObject : Object to getting the data with pagination. Example of their parameters:
+       *  {
+       *   limit : 10,
+       *   offset: 0,
+       *   search: ''
+       *  }
+       * @param callback
+       */
+      getAll: function (jsonObject, callback) {
+        $http({
+          method: 'GET',
+          url   : route,
+          params: jsonObject
+        })
+          .success(function (result) {
+            callback(result);
+          })
+          .error(function (error, status) {
+            console.log('not access: ', status, error);
+          });
+      }
+
+    }
+}])
 ```
 
-**$scope.params.offset** and **$scope.params.limit** is generated automatically by the directive. The initial value to $scope.params.limit is specified in the parameter "limit" in the html.
+###### Example of Media Model with Restangular
 
-**$scope.params.total** must be instantiated when data from the API with the value of total elements are obtained in the Database.
-
-To update the pagination when inserting or removing an item should use the event $emit:
 ```
-// Remove function.
-$scope.remove = function (index) {
-    Model.remove(index);
-    $scope.$emit('refresh:table:years_grid_listener');
-}
-```
+.factory('Media', ['Restangular', function (Restangular) {
+    var route = 'media';
 
-Where "years_grid_listener" is the phrase specified by you in "on" parameter of directive.
+    return {
+      all         : Restangular.all(route),
+      service     : Restangular.service(route),
+
+      /**
+       * Get all element by pagination or not.
+       *
+       * @param jsonObject : Object to getting the data with pagination. Example of their parameters:
+       *  {
+       *   limit : 10,
+       *   offset: 0,
+       *   search: ''
+       *  }
+       * @param callback
+       */
+      getAll      : function (jsonObject, callback) {
+        Restangular.all(route).customGET('', {
+          code  : 'list',
+          limit : jsonObject.limit,
+          offset: jsonObject.offset,
+          search: jsonObject.search
+        }).then(function (result) { // Success.
+            callback(result.data);
+          },
+          function (error) { // Error from server.
+            console.log('not access: ', error);
+          })
+      }
+}])
+```
 
 ## Installation for used example
+
+#### Local Server
+
 - Install node http-server: `sudo npm install -g http-server`
 - Access to folder `cd ./bower_components/cfpaginator`
 - Execute command: `http-server .` and open browser with URL [http://localhost:8080/example/](http://localhost:8080/example/)
+
+#### Apache Server
+
+- Copy cfmedia folder to /var/www/html/
+- Open browser with URL: [http://localhost/cfmedia/example/](http://localhost/cfmedia/example/)
