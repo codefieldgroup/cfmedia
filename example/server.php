@@ -2,10 +2,14 @@
 
 $images = [ ];
 for ($i = 1; $i < 27; $i++) {
+  $date = new DateTime( 'now' );
+  $date = $date->format( 'U' );
+
   array_push(
     $images,
     [
-      'meta' => $i.'.jpg'
+      'meta' => $i.'.jpg',
+      'date' => $date + $i
     ]
   );
 }
@@ -29,10 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $ext       = $ext[count( $ext ) - 1];
     $file_copy = $token.'.'.$ext;
 
+    $date = new DateTime( 'now' );
+    $date = $date->format( 'U' );
+
     if (move_uploaded_file( $tmp_name, __DIR__.'/upload/'.$file_copy )) {
       echo json_encode(
         [
-          'meta' => $file_copy
+          'meta' => $file_copy,
+          'date' => $date
         ]
       );
     }
