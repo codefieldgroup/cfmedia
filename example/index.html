@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html ng-app="example">
+  <head>
+    <title>CF Media Directive</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <!-- Bootstrap -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="https://github.com/danialfarid/ng-file-upload">:) Thanks ng-file-upload</a></li>
+          <li title="Contact with US"><a href="mailto:cfcoregroup@gmail.com" class="glyphicon glyphicon-send"></a></li>
+        </ul>
+
+        <h3 class="text-muted">CF Media Directive</h3>
+      </div>
+
+      <div class="row marketing">
+        <div ng-controller="ExampleController">
+
+          <div class="col-lg-8">
+            <img ng-if="test" class="img-thumbnail"
+                 ng-src="upload/{{ test }}"
+                 style="width: 100%;">
+
+            <img ng-if="!test" class="img-thumbnail"
+                 ng-src="images/no-image.svg"
+                 style="width: 100%;">
+          </div>
+
+          <div class="col-lg-4">
+
+            <div class="list-group">
+              <span class="list-group-item">
+
+                <!-- Directive cfmedia -->
+                <div cfmedia
+                     ng-model="test"
+                     multiple="false"
+                     return="string"
+                     api="server.php"
+                     url="upload/"
+                     order="date"
+                     filter="meta"
+                     head="Change Imagen">
+                  <span class="btn btn-default btn-block" role="button">
+                    <i class="glyphicon glyphicon-cloud-upload"></i>
+                    View Media Upload
+                  </span>
+                </div>
+
+              </span>
+
+              <span class="list-group-item">
+                <button class="btn btn-danger btn-block" role="button" ng-click="removeImage()">
+                  Remove
+                </button>
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/is_js/is.min.js"></script>
+
+    <script src="bower_components/angularjs/angular.min.js"></script>
+    <script src="bower_components/ng-file-upload-shim/ng-file-upload-shim.min.js"></script>
+    <script src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
+    <script src="app/app.js"></script>
+    <script src="../dist/cfmedia.min.js"></script>
+  </body>
+</html>
