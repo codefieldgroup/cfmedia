@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>cfmedia by codefieldgroup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">cfmedia</h1>
+      <h2 class="project-tagline">CFMedia is a simple directive to media upload inspired by Wordpress media style and based on the directive https://github.com/danialfarid/ng-file-upload.</h2>
+      <a href="https://github.com/codefieldgroup/cfmedia" class="btn">View on GitHub</a>
+      <a href="https://github.com/codefieldgroup/cfmedia/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/codefieldgroup/cfmedia/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="cfmedia-directive-to-angularjs" class="anchor" href="#cfmedia-directive-to-angularjs" aria-hidden="true"><span class="octicon octicon-link"></span></a>CFMedia Directive to AngularJS</h1>
+
+<p>CFMedia is a simple directive to media upload inspired by Wordpress media style and based on the directive <a href="https://github.com/danialfarid/ng-file-upload">ng-file-upload</a>.</p>
+
+<h2>
+<a id="it-is-assumed" class="anchor" href="#it-is-assumed" aria-hidden="true"><span class="octicon octicon-link"></span></a>It is assumed</h2>
+
+<ul>
+<li>Install nodejs: <code>sudo apt-get install nodejs npm</code>
+</li>
+<li>Install bower and update: <code>sudo npm install -g bower</code> and <code>bower update</code>
+</li>
+</ul>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<ul>
+<li>With bower: <code>bower install --save cfmedia</code>
+</li>
+<li>Add <strong>cf</strong> as a dependency to your app. Example:</li>
+</ul>
+
+<pre><code>angular.module('example', [
+    'cf'
+])
+</code></pre>
+
+<h2>
+<a id="in-html" class="anchor" href="#in-html" aria-hidden="true"><span class="octicon octicon-link"></span></a>In html:</h2>
+
+<p>External libraries scripts:</p>
+
+<pre><code>&lt;script src="./bower_components/is_js/is.min.js"&gt;&lt;/script&gt;
+&lt;script src="./bower_components/ng-file-upload-shim/ng-file-upload-shim.min.js"&gt;&lt;/script&gt;
+&lt;script src="./bower_components/ng-file-upload/ng-file-upload.min.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>Directive script:</p>
+
+<pre><code>&lt;script src="./bower_components/cfmedia/dist/cfmedia.min.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>Usage:</p>
+
+<pre><code>&lt;div cfmedia
+    ng-model="test"
+    multiple="false"
+    url="/public/path/upload/"
+    accept="image/*,application/pdf"
+    api="api/media"
+    order="date"
+    head="Upload Image"&gt;
+      &lt;button type="button" class="btn btn-default"&gt;View Media Upload&lt;/button&gt;
+&lt;/div&gt;
+</code></pre>
+
+<h2>
+<a id="options" class="anchor" href="#options" aria-hidden="true"><span class="octicon octicon-link"></span></a>Options</h2>
+
+<p>The directive accepts the following attributes:</p>
+
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ng-model</td>
+<td>Required</td>
+</tr>
+<tr>
+<td>head</td>
+<td>Optional. Default value is 'Change Image'. String with the title of the modal.</td>
+</tr>
+<tr>
+<td>api</td>
+<td>Optional. Default value is 'api/media'. String with the route of api media.</td>
+</tr>
+<tr>
+<td>url</td>
+<td>Optional. Default value is '/public/path/upload/'. String with the url to path of public images.</td>
+</tr>
+<tr>
+<td>multiple</td>
+<td>Optional. Default value is true. Boolean with the options to multiples images or not.</td>
+</tr>
+<tr>
+<td>return</td>
+<td>Optional. Default value is 'object'. String with the format to return result, "string" or "object".</td>
+</tr>
+<tr>
+<td></td>
+<td>If "string" then only return the meta field of image object.</td>
+</tr>
+<tr>
+<td></td>
+<td>If "object" then return the image object.</td>
+</tr>
+<tr>
+<td>accept</td>
+<td>Optional. Default value is 'image/*'. String with function or comma separated wildcard to filter files allowed.</td>
+</tr>
+<tr>
+<td></td>
+<td>.pdf,.jpg</td>
+</tr>
+<tr>
+<td></td>
+<td>image/*,application/pdf</td>
+</tr>
+<tr>
+<td></td>
+<td>audio/<em>,video/</em>
+</td>
+</tr>
+<tr>
+<td>order</td>
+<td>Optional. Default value is 'date'. String with the option to order by elements result.</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>Optional. Default value is 'meta'. String with field name of object that contain image name, example: dc3443.png</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="factory---required" class="anchor" href="#factory---required" aria-hidden="true"><span class="octicon octicon-link"></span></a>Factory - Required</h4>
+
+<p>Factory with name <strong>Media</strong> and function with name <strong>getAll</strong>.</p>
+
+<p>Where <strong>getAll</strong> return a object list where each object contain a <strong>meta</strong> field with the name of the image saved in the public folder</p>
+
+<p>If your model not contain a <strong>meta</strong> field then you should specify the name of the field in the option <strong>filter</strong> of the directive cfmedia.</p>
+
+<p><code>filter="meta"</code></p>
+
+<p>The idea is have an only model in order to work with all the images.</p>
+
+<h6>
+<a id="example-of-media-model-with-http" class="anchor" href="#example-of-media-model-with-http" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example of Media Model with $http</h6>
+
+<pre><code>.factory('Media', ['$http', function ($http) {
+    var route = 'media';
+
+    return {
+
+      /**
+       * Get all element by pagination or not.
+       *
+       * @param jsonObject : Object to getting the data with pagination. Example of their parameters:
+       *  {
+       *   limit : 10,
+       *   offset: 0,
+       *   search: ''
+       *  }
+       * @param callback
+       */
+      getAll: function (jsonObject, callback) {
+        $http({
+          method: 'GET',
+          url   : route,
+          params: jsonObject
+        })
+          .success(function (result) {
+            callback(result);
+          })
+          .error(function (error, status) {
+            console.log('not access: ', status, error);
+          });
+      }
+
+    }
+}])
+</code></pre>
+
+<h6>
+<a id="example-of-media-model-with-restangular" class="anchor" href="#example-of-media-model-with-restangular" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example of Media Model with Restangular</h6>
+
+<pre><code>.factory('Media', ['Restangular', function (Restangular) {
+    var route = 'media';
+
+    return {
+      all         : Restangular.all(route),
+      service     : Restangular.service(route),
+
+      /**
+       * Get all element by pagination or not.
+       *
+       * @param jsonObject : Object to getting the data with pagination. Example of their parameters:
+       *  {
+       *   limit : 10,
+       *   offset: 0,
+       *   search: ''
+       *  }
+       * @param callback
+       */
+      getAll      : function (jsonObject, callback) {
+        Restangular.all(route).customGET('', {
+          code  : 'list',
+          limit : jsonObject.limit,
+          offset: jsonObject.offset,
+          search: jsonObject.search
+        }).then(function (result) { // Success.
+            callback(result.data);
+          },
+          function (error) { // Error from server.
+            console.log('not access: ', error);
+          })
+      }
+}])
+</code></pre>
+
+<h2>
+<a id="installation-for-used-example" class="anchor" href="#installation-for-used-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation for used example</h2>
+
+<h4>
+<a id="apache-server" class="anchor" href="#apache-server" aria-hidden="true"><span class="octicon octicon-link"></span></a>Apache Server</h4>
+
+<ul>
+<li>Copy cfmedia folder to /var/www/html/</li>
+<li>Open browser with URL: <a href="http://localhost/cfmedia/example/">http://localhost/cfmedia/example/</a>
+</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/codefieldgroup/cfmedia">cfmedia</a> is maintained by <a href="https://github.com/codefieldgroup">codefieldgroup</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
