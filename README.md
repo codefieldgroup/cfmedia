@@ -1,6 +1,6 @@
 # CFMedia Directive to AngularJS
 
-CFMedia is a simple directive to media upload inspired by Wordpress media style.
+CFMedia is a simple directive to media upload inspired by Wordpress media style and based on the directive [ng-file-upload](https://github.com/danialfarid/ng-file-upload).
 
 ## It is assumed
 - Install nodejs: `sudo apt-get install nodejs npm`
@@ -152,12 +152,6 @@ The idea is have an only model in order to work with all the images.
 ```
 
 ## Installation for used example
-
-#### Local Server
-
-- Install node http-server: `sudo npm install -g http-server`
-- Access to folder `cd ./bower_components/cfpaginator`
-- Execute command: `http-server .` and open browser with URL [http://localhost:8080/example/](http://localhost:8080/example/)
 
 #### Apache Server
 
