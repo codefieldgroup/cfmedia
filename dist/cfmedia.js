@@ -38,117 +38,12 @@ angular.module("cf", [
  * - 'filter'   : Optional. Default value is 'meta'. String with field name of object that contain image name, example: dc3443.png
  */
   .directive('cfmedia', [function () {
-    var strTemplate = "";
-    strTemplate += "<div class=\"cfmedia\">";
-    strTemplate += "  <style>";
-    strTemplate += "    .cfmedia .jumbotron {";
-    strTemplate += "      border     : 4px dashed #b4b9be;";
-    strTemplate += "      text-align : center;";
-    strTemplate += "    }";
-    strTemplate += "";
-    strTemplate += "    .cfmedia .thumbnail {";
-    strTemplate += "      padding       : 1px;";
-    strTemplate += "      border        : 0px solid #ddd;";
-    strTemplate += "      border-radius : 0px;";
-    strTemplate += "      max-height    : 190px;";
-    strTemplate += "      overflow      : hidden;";
-    strTemplate += "    }";
-    strTemplate += "";
-    strTemplate += "    .cfmedia .thumbnail img {";
-    strTemplate += "      height : 112px;";
-    strTemplate += "    }";
-    strTemplate += "";
-    strTemplate += "    .cfmedia .selected img {";
-    strTemplate += "      border        : 2px dashed #428BCA;";
-    strTemplate += "      border-radius : 0px;";
-    strTemplate += "    }";
-    strTemplate += "";
-    strTemplate += "    .cfmedia .cf-search {";
-    strTemplate += "      background-color : #EEEEEE;";
-    strTemplate += "      padding          : 3px 5px;";
-    strTemplate += "    }";
-    strTemplate += "  <\/style>";
-    strTemplate += "  <div ng-transclude ng-click=\"openMediaModal(); openMediaModalCtrl()\"><\/div>";
-    strTemplate += "";
-    strTemplate += "  <!-- Modal -->";
-    strTemplate += "  <div class=\"cfmedia-modal modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modalLabel\" aria-hidden=\"true\">";
-    strTemplate += "    <div class=\"modal-dialog\" style=\"z-index : 1030; width : 92%;\">";
-    strTemplate += "      <div class=\"modal-content\">";
-    strTemplate += "        <div class=\"modal-header\">";
-    strTemplate += "          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;<\/button>";
-    strTemplate += "          <h4 class=\"modal-title\" id=\"modalLabel\">{{ headTitle }}<\/h4>";
-    strTemplate += "        <\/div>";
-    strTemplate += "        <div class=\"modal-body\">";
-    strTemplate += "          <div class=\"row\">";
-    strTemplate += "            <div class=\"col-md-12\">";
-    strTemplate += "              <div class=\"jumbotron\" style=\"padding: 17px 0; margin-bottom: 0px;\"";
-    strTemplate += "                   ngf-drop";
-    strTemplate += "                   ng-model=\"modelUpload\"";
-    strTemplate += "                   class=\"drop-box\"";
-    strTemplate += "                   ngf-drag-over-class=\"dragover\"";
-    strTemplate += "                   ngf-multiple=\"true\"";
-    strTemplate += "                   ngf-allow-dir=\"true\"";
-    strTemplate += "                   ngf-accept=\"accept\"";
-    strTemplate += "                      >";
-    strTemplate += "                <h3 style=\"margin-top: -3px;color: #393939;\">";
-    strTemplate += "                  Drop files anywhere to upload";
-    strTemplate += "                <\/h3>";
-    strTemplate += "";
-    strTemplate += "                <p class=\"lead\" style=\"color: #393939;\">";
-    strTemplate += "                  <translate>or<\/translate>";
-    strTemplate += "                <\/p>";
-    strTemplate += "";
-    strTemplate += "                <button ngf-select ngf-multiple=\"true\" ng-model=\"modelUpload\" type=\"button\"";
-    strTemplate += "                        class=\"btn btn-primary btn-lg no-border\"";
-    strTemplate += "                        style=\"font-size: 16px;\"";
-    strTemplate += "                        ngf-accept=\"accept\">";
-    strTemplate += "                  Select Files";
-    strTemplate += "                <\/button>";
-    strTemplate += "              <\/div>";
-    strTemplate += "            <\/div>";
-    strTemplate += "";
-    strTemplate += "            <div class=\"col-md-12\">";
-    strTemplate += "              <div class=\"col-md-12 cf-search\">";
-    strTemplate += "                <div class=\"input-group input-group-sm col-md-4 pull-right\">";
-    strTemplate += "                  <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-search\"><\/i><\/span>";
-    strTemplate += "                  <input type=\"text\" class=\"form-control\" ng-model=\"search\" placeholder=\"Search ...\">";
-    strTemplate += "                <\/div>";
-    strTemplate += "              <\/div>";
-    strTemplate += "";
-    strTemplate += "              <div class=\"col-md-12\" style=\"height: 256px; overflow: auto; margin-top: 14px;\">";
-    strTemplate += "                <div ng-repeat=\"element in elements | orderBy:order:true\" class=\"col-lg-2 thumbnail\"";
-    strTemplate += "                     ng-class=\"{'selected': element.activeClass}\"";
-    strTemplate += "                     ng-click=\"select(element, $index)\">";
-    strTemplate += "                  <img ng-src=\"{{ srcUrl + element[filter] }}\" class=\"img-thumbnail\" alt=\"\">";
-    strTemplate += "                <\/div>";
-    strTemplate += "              <\/div>";
-    strTemplate += "";
-    strTemplate += "              <button type=\"button\" class=\"btn btn-white no-border\" ng-click=\"loadMore()\" style=\"width: 100%;\">";
-    strTemplate += "                <i class=\"glyphicon glyphicon-plus\"><\/i>";
-    strTemplate += "                Show More";
-    strTemplate += "              <\/button>";
-    strTemplate += "            <\/div>";
-    strTemplate += "          <\/div>";
-    strTemplate += "        <\/div>";
-    strTemplate += "        <div class=\"modal-footer\">";
-    strTemplate += "          <button type=\"button\" class=\"btn btn-default no-border\" data-dismiss=\"modal\">";
-    strTemplate += "            <translate>Close<\/translate>";
-    strTemplate += "          <\/button>";
-    strTemplate += "          <button type=\"button\" class=\"btn btn-primary no-border\" ng-click=\"selectSaveCtrl(); selectSave()\">";
-    strTemplate += "            <translate>Ok<\/translate>";
-    strTemplate += "          <\/button>";
-    strTemplate += "        <\/div>";
-    strTemplate += "      <\/div>";
-    strTemplate += "    <\/div>";
-    strTemplate += "  <\/div>";
-    strTemplate += "<\/div>";
-
     return {
-      restrict  : 'A',
-      replace   : true,
-      transclude: true,
-      require   : '?ngModel',
-      scope     : {
+      restrict   : 'A',
+      replace    : true,
+      transclude : true,
+      require    : '?ngModel',
+      scope      : {
         model      : '=ngModel',
         headTitle  : '@?head',
         apiUrl     : '@?api',
@@ -159,7 +54,7 @@ angular.module("cf", [
         order      : '@?',
         filter     : '@?'
       },
-      template  : strTemplate,
+      templateUrl: 'cfmedia.html',
 
       link: function (scope, element) {
         // Open modal.
