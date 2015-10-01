@@ -39,7 +39,7 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
               <div class="jumbotron" style="padding: 17px 0; margin-bottom: 0px;"
                    ngf-drop
                    ng-model="modelUpload"
@@ -66,16 +66,16 @@
               </div>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
               <div class="col-md-12 cf-search">
-                <div class="input-group input-group-sm col-md-4 pull-right">
+                <div class="input-group input-group-sm col-md-4 col-lg-4 col-sm-12 col-xs-12 pull-right">
                   <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                   <input type="text" class="form-control" ng-model="search" placeholder="Search ...">
                 </div>
               </div>
 
               <div class="col-md-12" style="height: 256px; overflow: auto; margin-top: 14px;">
-                <div ng-repeat="element in elements | orderBy:order:true" class="col-lg-2 thumbnail"
+                <div ng-repeat="element in elements | orderBy:order:true" class="col-lg-2 col-md-2 col-sm-12 col-xs-12 thumbnail"
                      ng-class="{'selected': element.activeClass}"
                      ng-click="select(element, $index)">
                   <img ng-src="{{ srcUrl + element[filter] }}" class="img-thumbnail" alt="">
