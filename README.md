@@ -2,6 +2,8 @@
 
 CFMedia is a simple directive to media upload inspired by Wordpress media style and based on the directive [ng-file-upload](https://github.com/danialfarid/ng-file-upload).
 
+View [Example](http://cfmedia.miwp.eu/example/)
+
 ## It is assumed
 - Install nodejs: `sudo apt-get install nodejs npm`
 - Install bower and update: `sudo npm install -g bower` and `bower update`
